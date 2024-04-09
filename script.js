@@ -582,7 +582,7 @@ if (navigator.userAgent.includes("Windows")) {
   keymapSwitch.style.display = "flex";
   numOfWord(25);
   document.onmousemove = function () {
-    if (i>0) {
+    if (i>1) {
       document.getElementById("options").style.opacity = "1";
       document.getElementById("reset").style.opacity = "1";
   
@@ -594,7 +594,7 @@ if (navigator.userAgent.includes("Windows")) {
     }
   };
   let TID = setTimeout(() => {
-    if (i>0) {
+    if (i>1) {
       document.getElementById("options").style.opacity = "0";
       document.getElementById("reset").style.opacity = "0";
     }
