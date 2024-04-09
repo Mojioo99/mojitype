@@ -970,15 +970,18 @@ setInterval(() => {
       reset();
     }
   }
+  
+  touches = 0;
+  touchesRaw = 0;
+}, 1000);
+
+setInterval(()=>{
   if(switchCheck(minSpeed)){
     if(intime<30 && i>10){
       reset();
     }
   }
-  touches = 0;
-  touchesRaw = 0;
-}, 1000);
-
+},5000)
 var drawChart = function () {
   setTimeout(() => {
     document.getElementById("canvas").innerHTML =
