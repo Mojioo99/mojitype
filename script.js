@@ -587,13 +587,13 @@ if (navigator.userAgent.includes("Windows")) {
       document.getElementById("reset").style.opacity = "1";
   
       clearTimeout(TID);
-      setTimeout(() => {
+       TID =setTimeout(() => {
         document.getElementById("options").style.opacity = "0";
         document.getElementById("reset").style.opacity = "0";
       }, 5000);
     }
   };
-  const TID = setTimeout(() => {
+  let TID = setTimeout(() => {
     if (i>0) {
       document.getElementById("options").style.opacity = "0";
       document.getElementById("reset").style.opacity = "0";
