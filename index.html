@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MojiType</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+  <link rel="shortcut icon" href="keyboard_5643.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./style4.css" id="style1">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    select {
+      width: 100px;
+      padding: 0;
+      height: 40px;
+      margin-top: 11px;
+      border: none;
+      background-color: lightskyblue;
+      border-radius: 7px;
+    }
+
+    .button {
+      cursor: pointer;
+
+    }
+
+    * {
+      transition: all 0.3s !important;
+      z-index: 10;
+    }
+
+    #custom {
+      font-size: 18px;
+      padding: 3px;
+      line-height: 36px;
+    }
+
+    #custom:hover {
+      background-color: cadetblue;
+    }
+
+    #customBox,
+    .modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.445);
+      height: 100vh;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #customBox .parent {
+      background-color: rgba(0, 0, 0, 0.821);
+      width: 300px;
+      height: 200px;
+      border-radius: 20px;
+      color: white;
+      border: 2px solid rgb(34, 57, 58);
+      box-shadow: 0 0 10px black;
+
+
+    }
+
+    .modalText {
+      position: fixed;
+      right: 10px;
+      top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 116, 249, 0.406);
+      color: aliceblue;
+      border-radius: 20px;
+      border: 2px solid rgba(180, 131, 17, 0.768);
+      box-shadow: 0 0 15px black;
+      padding: 25px;
+      font-size: 17px;
+      font-family: 'Courier New', Courier, monospace;
+      opacity: 1;
+      transition: 0.5s;
+      animation: fadeOut linear forwards;
+      animation-duration: 3s;
+      animation-delay: 4s;
+      z-index: 2000;
+
+
+    }
+
+    @keyframes fadeOut {
+
+      100% {
+        transform: translateY(-300px);
+        opacity: 0;
+      }
+    }
+
+    #customBox .closed,
+    .funBox .closed,
+    .caretStyles .closed,
+    .timer .closed {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: cadetblue;
+      width: 25px;
+      height: 25px;
+      border-radius: 5px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      color: black;
+    }
+
+    #customBox .closed:hover {
+      background-color: rgb(19, 98, 101);
+    }
+
+    .child {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      height: 90%;
+    }
+
+    .child input {
+      background-color: rgb(142, 144, 146);
+      border: none;
+      width: 35px;
+      height: 25px;
+      border-radius: 7px;
+
+    }
+
+    .child p {
+      font-size: 20px;
+    }
+
+    .child button {
+      background-color: cadetblue;
+      border: none;
+    }
+
+    .realTime,
+    .liveAccuracy,
+    .timerBox {
+      margin-top: 10px;
+      height: 45px;
+      min-width: 95px;
+      line-height: 45px;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.033) !important;
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 200;
+      font-size: 22px;
+      transition: 0.5s;
+      margin-right: 6px;
+      margin-left: 5px;
+      color: rgba(255, 255, 255, 0.534);
+      display: none;
+      word-spacing: -5px;
+    }
+
+    #realTime,
+    #liveAccuracy {
+      /* white-space: nowrap; */
+      font-size: 16px !important;
+    }
+
+    #️keyy {
+      cursor: default;
+    }
+
+    #demo2 {
+      max-height: 155px;
+      width: 90vw !important;
+      overflow-y: scroll;
+      /* background-color: aliceblue !important; */
+      /* animation: shake 0.1s linear infinite !important; */
+      animation-delay: 1.2s !important;
+      pointer-events:none;
+      scroll-behavior: smooth !important;
+      font-family: 'consolas' monospace !important;
+      scrollbar-width: none;
+      font-size: 34px !important;
+      background-color: transparent;
+      line-height: 60px !important;
+      margin-top: -30px !important;
+      word-spacing: 1px;
+      text-align: left;
+      font-weight: 300;
+    }
+
+    #demo2::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: aqua;
+      opacity: 0;
+      scale: 0;
+      animation: spinner 0.4s linear infinite;
+    }
+
+    @keyframes spinner {
+
+      100% {
+        opacity: 1;
+        scale: .5;
+      }
+
+    }
+
+    @keyframes fadeIn {
+      100% {
+        opacity: 1;
+
+      }
+
+    }
+
+    @keyframes shake {
+      0% {
+        translate: 5px;
+      }
+
+      100% {
+        translate: -5px;
+      }
+    }
+
+    @keyframes roamer {
+
+      0% {
+        /* transform: translate(0,0); */
+        background-color: rgba(0, 0, 0, 0.548);
+      }
+
+      20% {
+        transform: translate(200px, 200px);
+
+      }
+
+      40% {
+        transform: translate(200px, -200px);
+      }
+
+      60% {
+        transform: translate(-200px, -200px);
+      }
+
+      80% {
+        transform: translate(-100px, 200px);
+
+      }
+
+      100% {
+        transform: translate(0, 0);
+        background-color: rgba(0, 0, 0, 0.539);
+
+      }
+
+    }
+
+
+    @keyframes rounder {
+      0% {
+        transform: rotatey(0deg);
+
+      }
+
+      100% {
+        transform: rotatey(360deg);
+      }
+    }
+
+    #liveAccuracy,
+    #realTime {
+      font-size: 18px;
+      padding: 0;
+      width: 95px;
+      text-align: center;
+    }
+
+    .disabled {
+      background-color: grey !important;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .crt {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* backdrop-filter: blur(0.6px); */
+      z-index: 30;
+      pointer-events: none;
+      /* animation: crtScreen 0.01s linear infinite; */
+      overflow: hidden;
+    }
+
+    .crt div {
+      width: 99.8%;
+      margin-top: 5px;
+      border: 1px solid rgba(7, 10, 12, 0.625);
+      border-width: 0 0 1px 0;
+      box-shadow: 0 0 5px rgba(245, 245, 245, 0.328);
+
+      z-index: 0;
+    }
+
+    .animate {
+      animation: crtScreen 0.01s linear 25;
+
+    }
+
+    @keyframes crtScreen {
+      100% {
+        box-shadow: 0 0 20px rgba(211, 215, 223, 0.409);
+        /* background-color: rgba(176, 186, 196, 0.176); */
+
+      }
+    }
+
+    @keyframes blink {
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .caret {
+      width: 0px;
+      height: 30px;
+      position: absolute;
+      background-color: chartreuse;
+      border-radius: 5px;
+      display: none;
+      left: 10vw;
+      transition: 0.15s !important;
+    }
+
+    .menuBtn {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      background-color: chartreuse;
+      border-radius: 50px;
+
+      bottom: 30vh;
+      left: 10vw;
+    }
+
+    .menuContainer {
+
+      position: absolute;
+      background-color: black;
+      width: 60%;
+      height: 75%;
+      top: 12.5%;
+      right: 20%;
+      overflow-y: scroll;
+
+    }
+    /* #hhhhh{display: none !important;} */
+
+    /* #options::-webkit-scrollbar{display: none;} */
+    @media screen and (max-width:450px) {
+      #options {
+        overflow-x: scroll !important;
+        width: 100% !important;
+      }
+
+      #demo2 {
+        padding: 10px 5px !important;
+        /* font-size: 26px !important; */
+      }
+    }
+
+    .optionsWindow {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.565);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .opsChild {
+      background-color: rgba(16, 17, 17, 0.908);
+      z-index: 15;
+      width: 300px;
+      height: 60%;
+
+
+
+    }
+
+    .title {
+      font-family: 'consolas';
+      font-size: 30px;
+      text-align: center;
+      background-color: rgba(70, 109, 143, 0.824);
+      width: fit-content;
+      border-radius: 20px;
+      padding: 5px;
+      margin: 20px auto;
+    }
+
+    .funBox {
+      background-color: rgba(16, 17, 17, 0.908);
+      z-index: 0;
+      width: 300px;
+      height: 60%;
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 0 3px;
+      color: black;
+      overflow-y: auto ;
+      overflow-x: hidden;
+
+    }
+    /* .funBox::-webkit-scrollbar{display: none;} */
+
+    #funBoxContainer,
+    #caretStylesContainer,
+    #timerContainer {
+      display: none;
+    }
+
+    .caretStyles,
+    .timer {
+      background-color: rgba(16, 17, 17, 0.908);
+      z-index: 0;
+      width: 300px;
+      height: 60%;
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 0 3px;
+      color: black;
+    }
+
+    .afk {
+      position: absolute;
+      width: 20%;
+      height: 4rem;
+      left: 40%;
+      padding-top: 20px;
+      font-size: 25px;
+      text-align: center;
+      line-height: 10px;
+      border-radius: 10px;
+      opacity: 0.5;
+      line-height: 20px;
+    }
+
+    #canvas {
+      width: 80%;
+    }
+
+    #options {
+      scale: 0.9;
+    }
+
+    #options .button {
+      color: aliceblue;
+    }
+
+    #hhhhh {
+      pointer-events: none;
+    }
+
+    @media screen and (max-width:450px) {
+      .afk{
+        left: 30%;
+        width: 40%;
+      }
+      
+      #canvas {
+        width: 100%;
+      }
+
+      #opsContainer {
+        position: absolute;
+        width: 90%;
+        height: 50%;
+        top: 20%;
+        left: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        display: none;
+      }
+
+      #options {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap !important;
+        background-color: rgba(0, 0, 0, 0.877) !important;
+        z-index: 0 !important;
+        scale: 0.75 !important;
+      }
+
+      #options .button , select {
+        width: 60% !important;
+        height: 45px !important;
+        padding: 0;
+        display: flex;
+        font-size: 22px;
+        justify-content: center;
+        align-items: center;
+        
+      }
+      
+
+      #options .close {
+        top: 20px !important;
+        right: 20px;
+        position: absolute;
+        font-size: 30px;
+        background-color: orangered;
+        width: 40px;
+        text-align: center;
+        border-radius: 10px;
+        display: block !important;
+
+      }
+
+      #demo2 {
+        margin-top: 10px !important;
+      }
+
+      #liveItems {
+        margin-top: 0px !important;
+        height: 30px;
+        
+      }
+
+      .optionsWindow,
+      #customBox {
+        z-index: 100 !important;
+      }
+
+      .nav {
+        /* display: flex; */
+        position: absolute !important;
+      }
+      #results .button{
+        width: 40% !important;
+      }
+    }
+
+    * {
+      user-select: none;
+    }
+
+    body {
+      scrollbar-width: none !important;
+
+    }
+
+    .nav {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border: 2px solid;
+      border-radius: 50%;
+      bottom: 25%;
+      left: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
+      background-color: rgba(255, 123, 0, 0.241);
+      cursor: pointer;
+      opacity: 0.8 !important;
+    }
+
+    .nav:hover {
+      background-color: rgba(255, 68, 0, 0.253);
+    }
+
+    .nav .material-symbols-outlined {
+      scale: 1.6;
+      color: orangered;
+    }
+
+    #options .close {
+      display: none;
+    }
+
+    #reset2 {
+      pointer-events: none;
+    }
+    
+  </style>
+
+</head>
+
+<body onchange="caretPosition()">
+  <div id="head" style="display: flex;justify-content: start;width: 95%;margin-top: 30px;">
+    <div class="message "><span>M</span><span>oji</span><span>T</span><span>ype</span><span
+        class="material-symbols-outlined">
+        keyboard
+      </span></div>
+  </div>
+
+  <div style="
+        background-color: rgb(229, 92, 119);
+        transform: translateY(0px);
+        position: fixed;
+        animation: demo 0.1s;
+        animation-iteration-count: 3;
+      " id="caps" class="button hidden">
+    CapsLock is on!
+  </div>
+  <span id="opsContainer">
+    <div id="options"
+      style="display: flex; width: 100%; background-color: rgba(0, 0, 0, 0.275); border-radius: 10px; padding: 7px; margin-top: -20px;">
+
+      <div class="button" id="demo10" onclick="numOfWord(10)">10</div>
+      <div class="button" id="demo15" onclick="numOfWord(15)">15</div>
+      <div class="button" id="demo25" onclick="numOfWord(25)">25</div>
+      <div id="custom" class="button">custom</div>
+      <div class="close">&times;</div>
+
+      <!-- <div class="button" id="demo50" onclick="numOfWord(50)">50</div> -->
+
+      <select name="" id="select" onchange="switchTheme()">
+        <option value="4">monkytype</option>
+        <option value="1">hacker</option>
+        <option value="2">vs code</option>
+        <option value="3">default</option>
+      </select>
+      <div id="keymapSwitch" class="button">Keymap</div>
+      <div id="realTime" class="button">live speed</div>
+      <div id="liveAccuracy" class="button">live Accuracy</div>
+
+      <div id="timer" class="button">timer</div>
+      <div id="funBox" class="button">funBox</div>
+      <div style="font-size: 16px; padding: 5px;text-align: center;" id="caretStyles" class="button">Caret <br> styles
+      </div>
+
+    </div>
+  </span>
+  <span id="funBoxContainer" class="optionsWindow">
+    <span class="funBox">
+      <span id="funBoxClose" class="closed">&times;</span>
+      <header class="title">funBox</header>
+      <div id="shake" class="button">shake</div>
+      <div id="rounder" class="button">rounder</div>
+      <div id="roamer" class="button">roamer</div>
+      <div id="crt" class="button">crt</div>
+      <div id="minAcc" class="button">minimum Accuracy</div>
+      
+    </span>
+  </span>
+  <span id="caretStylesContainer" class="optionsWindow">
+    <div class="caretStyles">
+      <span id="caretStylesClose" class="closed">&times;</span>
+      <header class="title">Caret Styles</header>
+      <div id="default" class="button active">default</div>
+      <div id="blinking" class="button">blinking</div>
+      <div id="bordered" class="button">bordered</div>
+    </div>
+  </span>
+  <span id="timerContainer" class="optionsWindow">
+    <div class="timer">
+      <span id="timerClose" class="closed">&times;</span>
+      <header class="title">timer</header>
+      <div id="30sec" class="button">30s</div>
+      <div id="60sec" class="button">60s</div>
+    </div>
+  </span>
+  <span id="liveItems"
+    style="display: flex; justify-content: start; width: 85%;margin: 0;padding: 0; margin-top: 0px;">
+    <div class=" realTime"></div>
+    <div class=" liveAccuracy"></div>
+    <div class=" timerBox">00:00</div>
+    <div class="realTime min">min Acc 90%</div>
+  </span>
+
+  <div id="textt" style="display: flex;">
+    <div id="demo2" class="hidden"></div>
+    <span id="caret" class="caret"></span>
+  </div>
+
+  <span style="scale:1.1;margin-top: 0px;" class="hidden" id="mnmn">
+  </span>
+  <span style="display: flex; justify-content: center;max-height: 400px;" id="canvas"></span>
+
+  <div id="results"
+    style="display: flex;gap: 0px;background-color: rgba(0, 0, 0, 0.148);padding:20px !important;border-radius: 5px; flex-wrap:wrap;align-items: center !important;justify-content: center; display: none; width: 70%;">
+    <!-- <div class="button hidden" id="demo7"></div> -->
+    <button class="button" id="demo3"></button>
+    <button class="button" id="demo4"></button>
+    <button class="button" id="demo5"></button>
+    <button class="button" id="demo6"></button>
+    <button style="display: none;" class="button" id="demo6"></button>
+
+  </div>
+  <button id="reset" class="button" onclick="reset()">Reset</button>
+  <div>
+    <div class="nav">
+      <span class="material-symbols-outlined">
+        settings
+      </span>
+    </div>
+  </div>
+  <span class="crt"></span>
+  <!-- <span id="menuBtn" class="menuBtn">&larr;</span> -->
+  <!-- <span style="display: none;" class="menuContainer"> -->
+
+
+
+  <div id="customBox">
+    <div class="parent">
+      <div class="child" style="position: relative;padding: 5px;">
+        <div class="closed">&times;</div>
+        <p>enter custom number of words:</p>
+        <input type="text">
+        <button>submit</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  <button id="reset2" class="button">Reset</button>
+  <input type="text" id="hhhhh">
+  <footer>
+    <div>0 . 0 . 01</div>
+  </footer>
+
+
+  <script src="
+  https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js
+  "></script>
+  <script src="./keymap.js"></script>
+  <script src="./script.js"></script>
+
+  <script>
+
+
+
+  </script>
+
+</body>
+
+</html>

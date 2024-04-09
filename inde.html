@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(8, 9, 9);
+        }
+
+        .parent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(0.6px);
+            pointer-events: none;
+        }
+
+        .parent div {
+            width: 99.8%;
+            margin-top: 10px;
+            border: 1px solid rgba(2, 68, 115, 0.444);
+            border-width: 0 0 1px 0;
+            box-shadow: 0 0 5px rgba(245, 245, 245, 0.228);
+            animation: glow 0.1s linear 5;
+        }
+
+        @keyframes glow {
+            100% {
+                box-shadow: 0 0 20px rgba(21, 22, 24, 0.409);
+
+            }
+        }
+
+        button {
+            background-color: aqua;
+            scale: 2;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        h1 {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myChart" style="width:100%;max-width:900px;height: 300px;"></canvas>
+    <!-- <div class="parent">
+
+    </div> -->
+    <h2 style="color: antiquewhite;">hellow world</h2>
+    <button>start</button>
+
+    <h1></h1>
+
+    <input type="text">
+
+    <script src="
+    https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js
+    "></script>
+
+    <script>
+        input = document.querySelector('input');
+        input.onkeydown = function (e) {
+
+            document.querySelector('h1').innerHTML = e.keyCode
+        }
+
+        datas = [61, 66, 50, 58, 6, 96, 9, 87, 52, 56, 54, 96, 35, 67, 84, 12]
+        values = []
+        x = 1
+        for (let i = 0; i < datas.length; i++) {
+
+            values.push(i)
+        }
+        const xValues = values
+
+        new Chart("myChart", {
+
+            data: {
+
+
+                datasets: [{
+                    type: "line",
+                    data: datas,
+                    borderColor: "lightskyblue",
+                    fill: true,
+
+                },
+                {
+                    type: "bubble",
+                    data: [10,null, 20,,, 30,, ,, 40, 90],
+                    borderColor: "blue",
+                    fill: true
+                }],
+                labels: xValues,
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false // Hide the legend
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent black background
+                    titleColor: '#fff', // White title text
+                    bodyColor: '#fff', // White body text
+                    bodyFontColor: '#333', // Black label values
+
+
+                }, scales: {
+                    yAxes: {
+                        title: {
+                            display: true,
+                            text: 'hello'
+                        }
+                    }, xAxes: {
+                        title: {
+                            display: true,
+                            text: 'hello'
+                        }
+                    }
+                }
+            }
+        });
+        for (i = 0; i < 169; i++) {
+            document.querySelector('.parent').innerHTML += `<div style='animation-delay:${i / 20}s'></div>`
+        }
+        setInterval(() => {
+            document.querySelector('.parent').innerHTML = ''
+            for (i = 0; i < 69; i++) {
+                document.querySelector('.parent').innerHTML += `<div style='animation-delay:${i / 20}s'></div>`
+            }
+        }, 70000);
+        setTimeout(() => {
+            document.querySelector('.parent').scrollTo
+        }, 500);
+        timeVars = { second: 0, minute: 0 }
+        let stopTimer = 0
+        const box = document.querySelector('h2')
+        const button = document.querySelector('button')
+        function timer() {
+            if (stopTimer == 0) {
+                if (timeVars.second <= 58) {
+                    setTimeout(() => {
+                        timeVars.second++;
+                        if (timeVars.second <= 9 && timeVars.minute <= 9) {
+                            box.innerHTML = `0${timeVars.minute}:0${timeVars.second}`
+                        } else if (timeVars.second <= 9 && timeVars.minute > 9) {
+                            box.innerHTML = `${timeVars.minute}:0${timeVars.second}`
+                        } else if (timeVars.second > 9 && timeVars.minute <= 9) {
+                            box.innerHTML = `0${timeVars.minute}:${timeVars.second}`
+                        } else {
+                            box.innerHTML = `${timeVars.minute}:${timeVars.second}`
+                        }
+                        timer()
+                    }, 1000);
+                } else {
+                    timeVars.minute++
+                    timeVars.second = 0
+                    timer()
+                }
+            } else {
+
+
+            }
+
+        }
+        button.onclick = function () {
+            if (button.innerText == 'start') {
+                button.innerText = 'stop'
+                condition = true;
+                stopTimer = 0
+                timer()
+            } else {
+                button.innerText = 'start'
+                condition = false;
+                timeVars.minute = 0
+                timeVars.second = 0
+                stopTimer = 1
+                timer()
+            }
+        }
+    </script>
+</body>
+
+</html>
