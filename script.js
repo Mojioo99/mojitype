@@ -542,8 +542,14 @@ function reset() {
   } else {
     document.querySelector(".min").style.display = "none";
   }
+  if(switchCheck(minSpeed)){
+    document.querySelector(".minSpeed").style.display = "block";
+  }else{
+    document.querySelector(".minSpeed").style.display = "none";
+  }
 }
 document.querySelector(".min").style.display = "none";
+document.querySelector(".minSpeed").style.display = "none";
 
 function show() {
   document.getElementById("section").classList.remove("hidden");
@@ -917,6 +923,11 @@ minAcc.onclick = function (e) {
   e.target.classList.toggle("active");
   reset();
 };
+minSpeed=document.getElementById('minSpeed')
+minSpeed.onclick=function(e){
+  e.target.classList.toggle('active');
+  reset();  
+}
 setInterval(() => {
   if (i < textBox.length - 1 && i > 1 && !isTimerActive) {
     // document.querySelector('.realTime').style.display = 'block'
@@ -956,6 +967,11 @@ setInterval(() => {
   }
   if (switchCheck(minAcc)) {
     if ((1 - (mistakes - 1) / textBox.length) * 100 < 90) {
+      reset();
+    }
+  }
+  if(switchCheck(minSpeed)){
+    if(intime<30 && i>10){
       reset();
     }
   }
