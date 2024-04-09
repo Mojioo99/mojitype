@@ -159,6 +159,7 @@ let isTimerActive = true; // Flag to control timer state
 let interval;
 function crtScreen(crtBtn) {
   if (switchCheck(crtBtn)) {
+    document.querySelector('.crt').style.display='block'
     for (let i = 0; i < 200; i++) {
       document.querySelector(
         ".crt"
@@ -184,6 +185,7 @@ function crtScreen(crtBtn) {
     }, 8000);
   } else {
     document.querySelector(".crt").innerHTML = "";
+    document.querySelector('.crt').style.display='none'
   }
 }
 function numOfWord(n) {
