@@ -355,7 +355,7 @@ function rightAndWrongKey(e) {
     rightKeyPress(e.key, keymapRC);
     i++;
   } else if (
-    e.key == textBox[i] &&
+    e.key.toLowerCase() == textBox[i] &&
     i < textBox.length &&
     e.key !== "Enter" &&
     e.key !== "Backspace" &&
@@ -363,11 +363,11 @@ function rightAndWrongKey(e) {
   ) {
     textBox[i] = `<span style='opacity:1 !important;animation-delay:${
       i / 120
-    }s'>${e.key}</span>`;
+    }s'>${e.key.toLowerCase()}</span>`;
     rightKeyPress(e.key, keymapRC);
     i++;
   } else if (
-    e.key != textBox[i] &&
+    e.key.toLowerCase() != textBox[i] &&
     i < textBox.length &&
     e.key !== "Enter" &&
     e.key !== "Backspace" &&
