@@ -30,9 +30,18 @@ afk.classList.add("afk");
 afk.style.color = keymapWC;
 afk.style.border = "2px solid " + keymapWC;
 afk.style.backgroundColor = keymapRC;
+let theme = document.getElementById("select").value;
+const lsTheme = JSON.parse(localStorage.getItem("theme"));
+if (lsTheme) {
+  document.getElementById("select").value = lsTheme;
+}
+setTimeout(() => {
+  switchTheme();
+}, 100);
 function switchTheme() {
   let css = document.getElementById("style1");
-  let theme = document.getElementById("select").value;
+  theme = document.getElementById("select").value;
+  localStorage.setItem("theme", JSON.stringify(theme));
   if (theme == 1) {
     css.href = "./style2.css";
     keymapRC = COLORS.second.right;
@@ -159,7 +168,7 @@ let isTimerActive = true; // Flag to control timer state
 let interval;
 function crtScreen(crtBtn) {
   if (switchCheck(crtBtn)) {
-    document.querySelector('.crt').style.display='block'
+    document.querySelector(".crt").style.display = "block";
     for (let i = 0; i < 200; i++) {
       document.querySelector(
         ".crt"
@@ -185,13 +194,30 @@ function crtScreen(crtBtn) {
     }, 8000);
   } else {
     document.querySelector(".crt").innerHTML = "";
-    document.querySelector('.crt').style.display='none'
+    document.querySelector(".crt").style.display = "none";
   }
 }
+const lsNumOfwords = JSON.parse(localStorage.getItem("numOfWords"));
+if (lsNumOfwords) {
+  setTimeout(() => {
+    numOfWord(lsNumOfwords);
+  }, 100);
+} else if (
+  navigator.userAgent.includes("Android") ||
+  navigator.userAgent.includes("iPhone")
+) {
+  document.getElementById("hhhhh").focus();
+  numOfWord(10);
+  document.querySelector(".nav").style.display = "flex";
+}else if (navigator.userAgent.includes("Windows")) {
+ numOfWord(25)
+}
+
 function numOfWord(n) {
   document.getElementById("demo2").innerHTML = "";
 
   numOfWords = n;
+  localStorage.setItem("numOfWords", JSON.stringify(numOfWords));
   numb = n;
   if (n == 15) {
     document.getElementById("demo15").classList.add("active");
@@ -396,9 +422,8 @@ document.body.addEventListener("keyup", function (e) {
       .scrollIntoView({ block: "end", inline: "end", behavior: "instant" });
   }
   keymapNextChar(100);
-  if(e.key=='Tab'){
+  if (e.key == "Tab") {
     document.getElementById("reset").style.opacity = "1";
-      
   }
   if (i > 0) {
     document.querySelector("#demo2 span:last-of-type").style.animation =
@@ -505,15 +530,15 @@ function animationBtnsHandler() {
   }
 }
 function reset() {
-  if (navigator.userAgent.includes('Windows')) {
+  if (navigator.userAgent.includes("Windows")) {
     document.getElementById("reset").style.opacity = "1";
     document.getElementById("options").style.opacity = "1";
-    setTimeout(()=>{
-      if (i>0) {
+    setTimeout(() => {
+      if (i > 0) {
         document.getElementById("reset").style.opacity = "0";
         document.getElementById("options").style.opacity = "0";
       }
-    },5000)
+    }, 5000);
   }
   document.getElementById("demo2").innerHTML = "";
   document.querySelector(".message").scrollIntoView({ behavior: "smooth" });
@@ -544,9 +569,9 @@ function reset() {
   } else {
     document.querySelector(".min").style.display = "none";
   }
-  if(switchCheck(minSpeed)){
+  if (switchCheck(minSpeed)) {
     document.querySelector(".minSpeed").style.display = "block";
-  }else{
+  } else {
     document.querySelector(".minSpeed").style.display = "none";
   }
 }
@@ -580,34 +605,25 @@ keymapSwitch.style.cursor = "pointer";
 keymapSwitch.style.display = "none";
 if (navigator.userAgent.includes("Windows")) {
   keymapSwitch.style.display = "flex";
-  numOfWord(25);
+  
   document.onmousemove = function () {
-    if (i>1) {
+    if (i > 1) {
       document.getElementById("options").style.opacity = "1";
       document.getElementById("reset").style.opacity = "1";
-  
+
       clearTimeout(TID);
-       TID =setTimeout(() => {
+      TID = setTimeout(() => {
         document.getElementById("options").style.opacity = "0";
         document.getElementById("reset").style.opacity = "0";
       }, 5000);
     }
   };
   let TID = setTimeout(() => {
-    if (i>1) {
+    if (i > 1) {
       document.getElementById("options").style.opacity = "0";
       document.getElementById("reset").style.opacity = "0";
     }
-
   }, 5000);
-}
-if (
-  navigator.userAgent.includes("Android") ||
-  navigator.userAgent.includes("iPhone")
-) {
-  document.getElementById("hhhhh").focus();
-  numOfWord(10);
-  document.querySelector(".nav").style.display = "flex";
 }
 
 keymapSwitch.onclick = function () {
@@ -617,6 +633,7 @@ keymapSwitch.onclick = function () {
     setTimeout(() => {
       document.getElementById("options").scrollIntoView({ behavior: "smooth" });
     }, 500);
+    saveToLS();
   }
 };
 function keymapSwitchCheck() {
@@ -682,6 +699,7 @@ caretStyles.onclick = function () {
 crt.onclick = function () {
   toggleActive(this);
   crtScreen(this);
+  saveToLS();
 };
 caretStylesClose = document.getElementById("caretStylesClose");
 caretStylesClose.onclick = function () {
@@ -701,6 +719,7 @@ defaultCaret.onclick = function () {
     defaultCaret.classList.remove("active");
     blinkingCaret.classList.remove("active");
   }
+  saveToLS();
 };
 
 blinkingCaret.onclick = function () {
@@ -718,11 +737,12 @@ blinkingCaret.onclick = function () {
     defaultCaret.classList.remove("active");
     blinkingCaret.classList.remove("active");
   }
+  saveToLS();
 };
 
 borderedCaret.onclick = function () {
   toggleActive(this);
-  caretPosition(100);
+  caretPosition();
   if (switchCheck(defaultCaret)) {
     blinkingCaret.classList.remove("active");
     borderedCaret.classList.remove("active");
@@ -735,6 +755,7 @@ borderedCaret.onclick = function () {
     defaultCaret.classList.remove("active");
     blinkingCaret.classList.remove("active");
   }
+  saveToLS();
 };
 function setAnimation(el) {
   setTimeout(() => {
@@ -769,6 +790,7 @@ function addAnimation() {}
     (el.onclick = function () {
       toggleActive(this);
       setAnimation(this);
+      saveToLS();
       reset();
     })
 );
@@ -915,7 +937,6 @@ document.onkeyup = function (e) {
   if (e.key == "Enter") {
     customize();
   }
-  
 };
 document.querySelector(".realTime").style.display = "none";
 document.querySelector(".liveAccuracy").style.display = "none";
@@ -923,13 +944,15 @@ document.onkeyup = function () {};
 minAcc = document.getElementById("minAcc");
 minAcc.onclick = function (e) {
   e.target.classList.toggle("active");
+  saveToLS();
   reset();
 };
-minSpeed=document.getElementById('minSpeed')
-minSpeed.onclick=function(e){
-  e.target.classList.toggle('active');
-  reset();  
-}
+minSpeed = document.getElementById("minSpeed");
+minSpeed.onclick = function (e) {
+  e.target.classList.toggle("active");
+  saveToLS();
+  reset();
+};
 setInterval(() => {
   if (i < textBox.length - 1 && i > 1 && !isTimerActive) {
     // document.querySelector('.realTime').style.display = 'block'
@@ -972,18 +995,18 @@ setInterval(() => {
       reset();
     }
   }
-  
+
   touches = 0;
   touchesRaw = 0;
 }, 1000);
 
-setInterval(()=>{
-  if(switchCheck(minSpeed)){
-    if(intime<30 && i>10){
+setInterval(() => {
+  if (switchCheck(minSpeed)) {
+    if (intime < 30 && i > 10) {
       reset();
     }
   }
-},5000)
+}, 5000);
 var drawChart = function () {
   setTimeout(() => {
     document.getElementById("canvas").innerHTML =
@@ -1200,14 +1223,14 @@ function keymapNextChar(delay) {
 }
 
 function inactivityTimer(delay = 5000) {
-  if (i>0) {
+  if (i > 0) {
     clearTimeout(timerId);
-  
+
     timerId = setTimeout(() => {
-      if (i>0) {
+      if (i > 0) {
         document.getElementById("demo2").style.filter = "blur(2px)";
         document.getElementById("caret").style.opacity = "0";
-    
+
         document.getElementById("demo2").parentElement.appendChild(afk);
         // Re-enable timer after alert for potential future inactivity
         isTimerActive = true;
@@ -1285,3 +1308,59 @@ document.getElementById("textt").onclick = function () {
     caretPosition();
   }, 500);
 };
+function saveToLS() {
+  let data = [];
+  let buttons = [
+    liveAccuracy,
+    realTime,
+    keymapSwitch,
+    defaultCaret,
+    blinkingCaret,
+    borderedCaret,
+    crt,
+    minAcc,
+    minSpeed,
+  ];
+
+  buttons.map((el) => {
+    let cl = Array.from(el.classList);
+
+    if (cl.indexOf("active") > -1) {
+      data.push({ el: el.innerText, stat: "true" });
+    } else {
+      data.push({ el: el.innerText, stat: "false" });
+    }
+  });
+  localStorage.setItem("stats", JSON.stringify(data));
+}
+let buttons = [
+  liveAccuracy,
+  realTime,
+  keymapSwitch,
+  defaultCaret,
+  blinkingCaret,
+  borderedCaret,
+  crt,
+  minAcc,
+  minSpeed,
+];
+console.log(buttons);
+
+const Ls = JSON.parse(localStorage.getItem("stats"));
+if (Ls) {
+  let i = 0;
+  buttons.forEach((element) => {
+    if (element.innerText == Ls[i].el) {
+      if (Ls[i].stat == "true") {
+        element.classList.add("active");
+      } else {
+        element.classList.remove("active");
+      }
+    }
+
+    i++;
+  });
+  setTimeout(() => {
+    reset();
+  }, 100);
+}
