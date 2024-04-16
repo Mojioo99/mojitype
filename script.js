@@ -335,6 +335,7 @@ function calculateResults() {
   }
   document.getElementById("demo5").innerHTML = `accuracy : ${Accuracy} %`;
   document.getElementById("demo6").innerHTML = `Speed: ${avg} WPM`;
+  document.getElementById('keystrokes').innerHTML=`keystrokes: ${keystrokes}`
 }
 touches = 0;
 var getKeyCode = function (str, index = str.length - 1) {
@@ -844,6 +845,9 @@ function invalidResult(text) {
   modalText.innerText = text;
 
   body.appendChild(modalText);
+  setTimeout(() => {
+  body.removeChild(modalText);
+  }, 10000);
 }
 
 function caretPosition() {
@@ -1406,3 +1410,16 @@ if (Ls) {
     reset();
   }, 100);
 }
+//screenShot
+function takeScreenShot() {
+  html2canvas(document.body, {
+    allowTaint: true,
+  }).then((canvas) => {
+    const link = document.createElement('a');
+    link.download = 'screenshot.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+screenShotBtn=document.getElementById('screenShot')
+screenShotBtn.onclick=takeScreenShot;

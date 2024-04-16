@@ -28,6 +28,31 @@
 
     }
 
+    #results {
+      display: flex;
+      gap: 0px;
+      background-color: rgba(0, 0, 0, 0.148);
+      padding: 20px !important;
+      border-radius: 5px;
+      flex-wrap: wrap;
+      align-items: center !important;
+      justify-content: center;
+      display: none;
+      width: 70%;
+    }
+
+    #results .button {
+      width: 30% !important;
+
+    }
+
+    #results .button:last-child {
+      pointer-events: all !important;
+      border: dashed;
+
+
+    }
+
     * {
       transition: all 0.3s !important;
       z-index: 10;
@@ -188,7 +213,7 @@
       /* background-color: aliceblue !important; */
       /* animation: shake 0.1s linear infinite !important; */
       animation-delay: 1.2s !important;
-      pointer-events:none;
+      pointer-events: none;
       scroll-behavior: smooth !important;
       font-family: 'consolas' monospace !important;
       scrollbar-width: none;
@@ -376,6 +401,7 @@
       overflow-y: scroll;
 
     }
+
     /* #hhhhh{display: none !important;} */
 
     /* #options::-webkit-scrollbar{display: none;} */
@@ -425,7 +451,8 @@
       margin: 20px auto;
     }
 
-    .funBox , .keymapConfig {
+    .funBox,
+    .keymapConfig {
       background-color: rgba(16, 17, 17, 0.908);
       z-index: 0;
       width: 300px;
@@ -434,10 +461,11 @@
       border-radius: 10px;
       box-shadow: 0 0 3px;
       color: black;
-      overflow-y: auto ;
+      overflow-y: auto;
       overflow-x: hidden;
 
     }
+
     /* .funBox::-webkit-scrollbar{display: none;} */
 
     #funBoxContainer,
@@ -490,11 +518,11 @@
     }
 
     @media screen and (max-width:450px) {
-      .afk{
+      .afk {
         left: 30%;
         width: 40%;
       }
-      
+
       #canvas {
         width: 100%;
       }
@@ -523,7 +551,8 @@
         scale: 0.75 !important;
       }
 
-      #options .button , select {
+      #options .button,
+      select {
         width: 60% !important;
         height: 45px !important;
         padding: 0;
@@ -531,9 +560,9 @@
         font-size: 22px;
         justify-content: center;
         align-items: center;
-        
+
       }
-      
+
 
       #options .close {
         top: 20px !important;
@@ -555,7 +584,7 @@
       #liveItems {
         margin-top: 0px !important;
         height: 30px;
-        
+
       }
 
       .optionsWindow,
@@ -567,7 +596,8 @@
         /* display: flex; */
         position: absolute !important;
       }
-      #results .button{
+
+      #results .button {
         width: 40% !important;
       }
     }
@@ -614,7 +644,8 @@
     #reset2 {
       pointer-events: none;
     }
-    #keymapConfig{
+
+    #keymapConfig {
       font-size: 16px;
       padding: 5px;
       display: none;
@@ -690,7 +721,7 @@
       <div id="crt" class="button">crt</div>
       <div id="minAcc" class="button">minimum Accuracy</div>
       <div id="minSpeed" class="button">minimum Speed</div>
-      
+
     </span>
   </span>
   <span id="caretStylesContainer" class="optionsWindow">
@@ -710,8 +741,7 @@
       <div id="60sec" class="button">60s</div>
     </div>
   </span>
-  <span id="liveItems"
-    style="display: flex; justify-content: start; width: 85%;margin: 0;padding: 0; margin-top: 0px;">
+  <span id="liveItems" style="display: flex; justify-content: start; width: 85%;margin: 0;padding: 0; margin-top: 0px;">
     <div class=" realTime"></div>
     <div class=" liveAccuracy"></div>
     <div class=" timerBox">00:00</div>
@@ -728,14 +758,17 @@
   </span>
   <span style="display: flex; justify-content: center;max-height: 400px;" id="canvas"></span>
 
-  <div id="results"
-    style="display: flex;gap: 0px;background-color: rgba(0, 0, 0, 0.148);padding:20px !important;border-radius: 5px; flex-wrap:wrap;align-items: center !important;justify-content: center; display: none; width: 70%;">
+  <div id="results">
     <!-- <div class="button hidden" id="demo7"></div> -->
+
     <button class="button" id="demo3"></button>
     <button class="button" id="demo4"></button>
     <button class="button" id="demo5"></button>
     <button class="button" id="demo6"></button>
-    <button style="display: none;" class="button" id="demo6"></button>
+    <button class="button" id="keystrokes">keystrokes</button>
+    <button class="button" id="screenShot">Screen Shot</button>
+
+
 
   </div>
   <button id="reset" class="button" onclick="reset()">Reset</button>
@@ -768,8 +801,9 @@
   <footer>
     <div>0 . 0 . 01</div>
   </footer>
+  <div></div>
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="
   https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js
   "></script>
