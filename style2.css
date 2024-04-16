@@ -79,12 +79,12 @@ body::-webkit-scrollbar {
 
 #results .button:last-child {
   pointer-events: all !important;
-  border: dashed rgb(25, 86, 22);
+  border: dashed rgb(25, 86, 22) !important;
   background-color: transparent;
   color: white;
   outline: none;
 }
-#results .button:last-child:hover {border-color:rgb(107, 38, 1);}
+#results .button:last-child:hover {border-color:rgb(107, 38, 1) !important ;}
 .button {
   border: none;
   background-color: rgb(25, 86, 22);

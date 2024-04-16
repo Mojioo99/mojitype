@@ -335,7 +335,7 @@ function calculateResults() {
   }
   document.getElementById("demo5").innerHTML = `accuracy : ${Accuracy} %`;
   document.getElementById("demo6").innerHTML = `Speed: ${avg} WPM`;
-  document.getElementById('keystrokes').innerHTML=`keystrokes: ${keystrokes}`
+  document.getElementById("keystrokes").innerHTML = `keystrokes: ${keystrokes}`;
 }
 touches = 0;
 var getKeyCode = function (str, index = str.length - 1) {
@@ -591,7 +591,11 @@ window.addEventListener("keydown", function (e) {
 });
 
 function rightKeyPress(key, color) {
-  if (!switchCheck(keymapNext) && !switchCheck(keymapStatic) && switchCheck(keymapReact)) {
+  if (
+    !switchCheck(keymapNext) &&
+    !switchCheck(keymapStatic) &&
+    switchCheck(keymapReact)
+  ) {
     for (j = 0; j < spans.length; j++) {
       if (key == spans[j].innerHTML) {
         spans[j].style.backgroundColor = color;
@@ -608,7 +612,7 @@ keymapSwitch.style.display = "none";
 keymapConfig.style.display = "none";
 if (navigator.userAgent.includes("Windows")) {
   keymapSwitch.style.display = "flex";
-  keymapConfig.style.display='flex';
+  keymapConfig.style.display = "flex";
 
   document.onmousemove = function () {
     if (i > 1) {
@@ -702,20 +706,20 @@ keymapNext = document.getElementById("next");
 [keymapNext, keymapStatic, keymapReact].map((el) => {
   el.onclick = function () {
     toggleActive(el);
-    if(el==keymapNext){
-      keymapReact.classList.remove('active')
-      keymapStatic.classList.remove('active')
-    }else if(el==keymapReact){
-      keymapNext.classList.remove('active')
-      keymapStatic.classList.remove('active')
-    }else if(el==keymapStatic){
-      keymapNext.classList.remove('active')
-      keymapReact.classList.remove('active')
-    }else{
-      toggleActive(keymapStatic)
+    if (el == keymapNext) {
+      keymapReact.classList.remove("active");
+      keymapStatic.classList.remove("active");
+    } else if (el == keymapReact) {
+      keymapNext.classList.remove("active");
+      keymapStatic.classList.remove("active");
+    } else if (el == keymapStatic) {
+      keymapNext.classList.remove("active");
+      keymapReact.classList.remove("active");
+    } else {
+      toggleActive(keymapStatic);
     }
-    saveToLS()
-    reset()
+    saveToLS();
+    reset();
   };
 });
 keymapConfigClose = document.getElementById("keymapConfigClose");
@@ -846,7 +850,7 @@ function invalidResult(text) {
 
   body.appendChild(modalText);
   setTimeout(() => {
-  body.removeChild(modalText);
+    body.removeChild(modalText);
   }, 10000);
 }
 
@@ -1231,35 +1235,39 @@ function XYZ(el) {
   keymapNextChar(100);
 }
 function keymapNextChar(delay) {
- if (switchCheck(keymapNext) && !switchCheck(keymapStatic) && !switchCheck(keymapReact)) {
-   setTimeout(() => {
-     qz = document.getElementById("demo2").innerText.split("");
-     qzz = document.getElementById("demo2").innerText.split(" ");
-     spans2 = document.querySelectorAll("#keyy");
-     // const synth = window.speechSynthesis;
-     // let text = qzz[i]
-     // console.log(text);
-     // let utterThis = new SpeechSynthesisUtterance(text);
-     // utterThis.rate=2
-     // synth.speak(utterThis)
- 
-     for (let t = 0; t < spans2.length; t++) {
-       if (spans2[t].innerHTML == qz[i]) {
-         spans2[t].style.backgroundColor = keymapRC;
-         spans2[t].style.color = "black";
-       } else {
-         spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
-         spans2[t].style.color = keymapRC;
-       }
-       if (qz[i] == "-") {
-         document.getElementById("space").style.backgroundColor = keymapRC;
-       } else {
-         document.getElementById("space").style.backgroundColor =
-           "rgba(69, 68, 68, 0.345)";
-       }
-     }
-   }, delay);
- }
+  if (
+    switchCheck(keymapNext) &&
+    !switchCheck(keymapStatic) &&
+    !switchCheck(keymapReact)
+  ) {
+    setTimeout(() => {
+      qz = document.getElementById("demo2").innerText.split("");
+      qzz = document.getElementById("demo2").innerText.split(" ");
+      spans2 = document.querySelectorAll("#keyy");
+      // const synth = window.speechSynthesis;
+      // let text = qzz[i]
+      // console.log(text);
+      // let utterThis = new SpeechSynthesisUtterance(text);
+      // utterThis.rate=2
+      // synth.speak(utterThis)
+
+      for (let t = 0; t < spans2.length; t++) {
+        if (spans2[t].innerHTML == qz[i]) {
+          spans2[t].style.backgroundColor = keymapRC;
+          spans2[t].style.color = "black";
+        } else {
+          spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
+          spans2[t].style.color = keymapRC;
+        }
+        if (qz[i] == "-") {
+          document.getElementById("space").style.backgroundColor = keymapRC;
+        } else {
+          document.getElementById("space").style.backgroundColor =
+            "rgba(69, 68, 68, 0.345)";
+        }
+      }
+    }, delay);
+  }
 }
 
 function inactivityTimer(delay = 5000) {
@@ -1362,7 +1370,7 @@ function saveToLS() {
     minSpeed,
     keymapNext,
     keymapReact,
-    keymapStatic
+    keymapStatic,
   ];
 
   buttons.map((el) => {
@@ -1388,9 +1396,8 @@ let buttons = [
   minSpeed,
   keymapNext,
   keymapReact,
-  keymapStatic
+  keymapStatic,
 ];
-
 
 const Ls = JSON.parse(localStorage.getItem("stats"));
 if (Ls) {
@@ -1415,11 +1422,11 @@ function takeScreenShot() {
   html2canvas(document.body, {
     allowTaint: true,
   }).then((canvas) => {
-    const link = document.createElement('a');
-    link.download = 'screenshot.png';
-    link.href = canvas.toDataURL('image/png');
+    const link = document.createElement("a");
+    link.download = "screenshot.png";
+    link.href = canvas.toDataURL("image/png");
     link.click();
   });
 }
-screenShotBtn=document.getElementById('screenShot')
-screenShotBtn.onclick=takeScreenShot;
+screenShotBtn = document.getElementById("screenShot");
+screenShotBtn.onclick = takeScreenShot;
