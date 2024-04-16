@@ -104,7 +104,8 @@
     #customBox .closed,
     .funBox .closed,
     .caretStyles .closed,
-    .timer .closed {
+    .timer .closed,
+    .keymapConfig .closed {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -424,7 +425,7 @@
       margin: 20px auto;
     }
 
-    .funBox {
+    .funBox , .keymapConfig {
       background-color: rgba(16, 17, 17, 0.908);
       z-index: 0;
       width: 300px;
@@ -441,7 +442,8 @@
 
     #funBoxContainer,
     #caretStylesContainer,
-    #timerContainer {
+    #timerContainer,
+    #keymapConfigContainer {
       display: none;
     }
 
@@ -612,7 +614,12 @@
     #reset2 {
       pointer-events: none;
     }
-    
+    #keymapConfig{
+      font-size: 16px;
+      padding: 5px;
+      display: none;
+      line-height: 20px;
+    }
   </style>
 
 </head>
@@ -652,17 +659,27 @@
         <option value="2">vs code</option>
         <option value="3">default</option>
       </select>
-      <div id="keymapSwitch" class="button">Keymap</div>
       <div id="realTime" class="button">live speed</div>
       <div id="liveAccuracy" class="button">live Accuracy</div>
-
       <div id="timer" class="button">timer</div>
       <div id="funBox" class="button">funBox</div>
       <div style="font-size: 16px; padding: 5px;text-align: center;" id="caretStyles" class="button">Caret <br> styles
       </div>
-
+      <div id="keymapSwitch" class="button">Keymap</div>
+      <div id="keymapConfig" class="button">keymap <br> config</div>
     </div>
   </span>
+
+  <span id="keymapConfigContainer" class="optionsWindow">
+    <span class="keymapConfig">
+      <span id="keymapConfigClose" class="closed">&times;</span>
+      <header class="title">Keymap Config</header>
+      <div id="static" class="button active">static</div>
+      <div id="react" class="button">react</div>
+      <div id="next" class="button">next</div>
+    </span>
+  </span>
+
   <span id="funBoxContainer" class="optionsWindow">
     <span class="funBox">
       <span id="funBoxClose" class="closed">&times;</span>

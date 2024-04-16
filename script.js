@@ -88,7 +88,6 @@ blinkingCaret = document.getElementById("blinking");
 borderedCaret = document.getElementById("bordered");
 keymapSwitch = document.getElementById("keymapSwitch");
 
-console.log(spans[0]);
 function gen() {
   textBox = document.getElementById("demo2").innerHTML;
   const box = document.getElementById("demo2");
@@ -114,7 +113,7 @@ function gen() {
     }
     average = (average + numb) / qzaaa.length;
     console.log(average);
-    console.log(qzaaa);
+
     check = Array.from(textBox);
     textBox = Array.from(textBox);
 
@@ -209,8 +208,8 @@ if (lsNumOfwords) {
   document.getElementById("hhhhh").focus();
   numOfWord(10);
   document.querySelector(".nav").style.display = "flex";
-}else if (navigator.userAgent.includes("Windows")) {
- numOfWord(25)
+} else if (navigator.userAgent.includes("Windows")) {
+  numOfWord(25);
 }
 
 function numOfWord(n) {
@@ -323,7 +322,7 @@ function calculateResults() {
       return 0;
     }
   }
-  console.log(timeTaken, timeTaken - chart.length, chart);
+
   document.getElementById(
     "demo4"
   ).innerHTML = `${timeTaken}s afk:(${afkTime().toFixed(
@@ -591,21 +590,25 @@ window.addEventListener("keydown", function (e) {
 });
 
 function rightKeyPress(key, color) {
-  for (j = 0; j < spans.length; j++) {
-    if (key == spans[j].innerHTML) {
-      spans[j].style.backgroundColor = color;
-      let currnet = j;
-      setTimeout(() => {
-        spans[currnet].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
-      }, 150);
+  if (!switchCheck(keymapNext) && !switchCheck(keymapStatic) && switchCheck(keymapReact)) {
+    for (j = 0; j < spans.length; j++) {
+      if (key == spans[j].innerHTML) {
+        spans[j].style.backgroundColor = color;
+        let currnet = j;
+        setTimeout(() => {
+          spans[currnet].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
+        }, 150);
+      }
     }
   }
 }
 keymapSwitch.style.cursor = "pointer";
 keymapSwitch.style.display = "none";
+keymapConfig.style.display = "none";
 if (navigator.userAgent.includes("Windows")) {
   keymapSwitch.style.display = "flex";
-  
+  keymapConfig.style.display='flex';
+
   document.onmousemove = function () {
     if (i > 1) {
       document.getElementById("options").style.opacity = "1";
@@ -688,6 +691,36 @@ funBoxClose = document.getElementById("funBoxClose");
 funBoxClose.onclick = function () {
   document.getElementById("funBoxContainer").style.display = "none";
 };
+keymapConfig = document.getElementById("keymapConfig");
+keymapConfig.onclick = function () {
+  document.getElementById("keymapConfigContainer").style.display = "flex";
+};
+keymapStatic = document.getElementById("static");
+keymapReact = document.getElementById("react");
+keymapNext = document.getElementById("next");
+[keymapNext, keymapStatic, keymapReact].map((el) => {
+  el.onclick = function () {
+    toggleActive(el);
+    if(el==keymapNext){
+      keymapReact.classList.remove('active')
+      keymapStatic.classList.remove('active')
+    }else if(el==keymapReact){
+      keymapNext.classList.remove('active')
+      keymapStatic.classList.remove('active')
+    }else if(el==keymapStatic){
+      keymapNext.classList.remove('active')
+      keymapReact.classList.remove('active')
+    }else{
+      toggleActive(keymapStatic)
+    }
+    saveToLS()
+    reset()
+  };
+});
+keymapConfigClose = document.getElementById("keymapConfigClose");
+keymapConfigClose.onclick = function () {
+  document.getElementById("keymapConfigContainer").style.display = "none";
+};
 
 timer.onclick = function () {
   document.getElementById("timerContainer").style.display = "flex";
@@ -757,6 +790,7 @@ borderedCaret.onclick = function () {
   }
   saveToLS();
 };
+
 function setAnimation(el) {
   setTimeout(() => {
     let arr = Array.from(el.classList);
@@ -1193,33 +1227,35 @@ function XYZ(el) {
   keymapNextChar(100);
 }
 function keymapNextChar(delay) {
-  setTimeout(() => {
-    qz = document.getElementById("demo2").innerText.split("");
-    qzz = document.getElementById("demo2").innerText.split(" ");
-    spans2 = document.querySelectorAll("#keyy");
-    // const synth = window.speechSynthesis;
-    // let text = qzz[i]
-    // console.log(text);
-    // let utterThis = new SpeechSynthesisUtterance(text);
-    // utterThis.rate=2
-    // synth.speak(utterThis)
-
-    for (let t = 0; t < spans2.length; t++) {
-      if (spans2[t].innerHTML == qz[i]) {
-        spans2[t].style.backgroundColor = keymapRC;
-        spans2[t].style.color = "black";
-      } else {
-        spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
-        spans2[t].style.color = keymapRC;
-      }
-      if (qz[i] == "-") {
-        document.getElementById("space").style.backgroundColor = keymapRC;
-      } else {
-        document.getElementById("space").style.backgroundColor =
-          "rgba(69, 68, 68, 0.345)";
-      }
-    }
-  }, delay);
+ if (switchCheck(keymapNext) && !switchCheck(keymapStatic) && !switchCheck(keymapReact)) {
+   setTimeout(() => {
+     qz = document.getElementById("demo2").innerText.split("");
+     qzz = document.getElementById("demo2").innerText.split(" ");
+     spans2 = document.querySelectorAll("#keyy");
+     // const synth = window.speechSynthesis;
+     // let text = qzz[i]
+     // console.log(text);
+     // let utterThis = new SpeechSynthesisUtterance(text);
+     // utterThis.rate=2
+     // synth.speak(utterThis)
+ 
+     for (let t = 0; t < spans2.length; t++) {
+       if (spans2[t].innerHTML == qz[i]) {
+         spans2[t].style.backgroundColor = keymapRC;
+         spans2[t].style.color = "black";
+       } else {
+         spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
+         spans2[t].style.color = keymapRC;
+       }
+       if (qz[i] == "-") {
+         document.getElementById("space").style.backgroundColor = keymapRC;
+       } else {
+         document.getElementById("space").style.backgroundColor =
+           "rgba(69, 68, 68, 0.345)";
+       }
+     }
+   }, delay);
+ }
 }
 
 function inactivityTimer(delay = 5000) {
@@ -1320,6 +1356,9 @@ function saveToLS() {
     crt,
     minAcc,
     minSpeed,
+    keymapNext,
+    keymapReact,
+    keymapStatic
   ];
 
   buttons.map((el) => {
@@ -1343,8 +1382,11 @@ let buttons = [
   crt,
   minAcc,
   minSpeed,
+  keymapNext,
+  keymapReact,
+  keymapStatic
 ];
-console.log(buttons);
+
 
 const Ls = JSON.parse(localStorage.getItem("stats"));
 if (Ls) {
