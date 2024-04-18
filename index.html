@@ -53,11 +53,17 @@
 
     }
 
+    #results .button:nth-child(5) {
+      pointer-events: all !important;
+    }
+
+
+
     * {
       transition: all 0.3s !important;
       z-index: 10;
     }
-
+ 
     #custom {
       font-size: 18px;
       padding: 3px;
@@ -651,6 +657,21 @@
       display: none;
       line-height: 20px;
     }
+    .progress{
+      top:43%;
+      width: 70%;
+      left: 15%;
+      height: 1%;
+      background-color: transparent;
+      position: absolute;
+    }
+    .progress-bar{
+      width: 0%;
+      background-color: aqua;
+      height: 100%;
+      box-shadow: 0 0 15px grey;
+      
+    }
   </style>
 
 </head>
@@ -752,6 +773,9 @@
   <div id="textt" style="display: flex;">
     <div id="demo2" class="hidden"></div>
     <span id="caret" class="caret"></span>
+    <span class="progress">
+      <div class="progress-bar"></div>
+    </span>
   </div>
 
   <span style="scale:1.1;margin-top: 0px;" class="hidden" id="mnmn">
@@ -765,9 +789,8 @@
     <button class="button" id="demo4"></button>
     <button class="button" id="demo5"></button>
     <button class="button" id="demo6"></button>
-    <button class="button" id="keystrokes">keystrokes</button>
+    <button class="button" id="replay">replay</button>
     <button class="button" id="screenShot">Screen Shot</button>
-
 
 
   </div>
@@ -780,6 +803,7 @@
     </div>
   </div>
   <span class="crt"></span>
+  
   <!-- <span id="menuBtn" class="menuBtn">&larr;</span> -->
   <!-- <span style="display: none;" class="menuContainer"> -->
 

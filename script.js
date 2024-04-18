@@ -114,6 +114,7 @@ function gen() {
     average = (average + numb) / qzaaa.length;
     console.log(average);
 
+    replayData = Array.from(textBox);
     check = Array.from(textBox);
     textBox = Array.from(textBox);
 
@@ -335,7 +336,6 @@ function calculateResults() {
   }
   document.getElementById("demo5").innerHTML = `accuracy : ${Accuracy} %`;
   document.getElementById("demo6").innerHTML = `Speed: ${avg} WPM`;
-  document.getElementById("keystrokes").innerHTML = `keystrokes: ${keystrokes}`;
 }
 touches = 0;
 var getKeyCode = function (str, index = str.length - 1) {
@@ -410,6 +410,11 @@ function rightAndWrongKey(e) {
 
   document.getElementById("demo2").innerHTML = textBox.join("");
 }
+document.onkeydown = function (e) {
+  if (replayState) {
+    e.preventDefault();
+  }
+};
 document.body.addEventListener("keyup", function (e) {
   touches++;
   touchesRaw++;
@@ -574,6 +579,8 @@ function reset() {
   } else {
     document.querySelector(".minSpeed").style.display = "none";
   }
+  keypressTimesArray = [];
+  replayButton.style.display = "initial";
 }
 document.querySelector(".min").style.display = "none";
 document.querySelector(".minSpeed").style.display = "none";
@@ -996,7 +1003,7 @@ minSpeed.onclick = function (e) {
   reset();
 };
 setInterval(() => {
-  if (i < textBox.length - 1 && i > 1 && !isTimerActive) {
+  if (i < textBox.length - 1 && i > 1 && !isTimerActive && !replayState) {
     // document.querySelector('.realTime').style.display = 'block'
     // document.querySelector('.liveAccuracy').style.display = 'block'
     if (errors == 0) {
@@ -1050,6 +1057,7 @@ setInterval(() => {
   }
 }, 5000);
 var drawChart = function () {
+  document.getElementById("canvas").innerHTML = "";
   setTimeout(() => {
     document.getElementById("canvas").innerHTML =
       '<canvas id="myChart" style="width:100%;height: 250px;"></canvas>';
@@ -1210,6 +1218,8 @@ function XYZ(el) {
       i / 120
     }s'>${char}</span>`;
     rightKeyPress(char, keymapRC);
+    document.querySelector(".progress-bar").style.backgroundColor = keymapRC;
+
     i++;
   } else if (
     char != textBox[i] &&
@@ -1221,8 +1231,9 @@ function XYZ(el) {
     textBox[i] = `<span id='sec' style='opacity:1 !important;animation-delay:${
       i / 120
     }s'>${textBox[i]}</span>`;
-    document.getElementById("demo3").innerHTML = `mistakes: ${mistakes++} `;
+
     rightKeyPress(char, keymapWC);
+  document.querySelector(".progress-bar").style.backgroundColor = keymapWC;
 
     i++;
   } else if (char == "Backspace" && i > 0) {
@@ -1430,3 +1441,88 @@ function takeScreenShot() {
 }
 screenShotBtn = document.getElementById("screenShot");
 screenShotBtn.onclick = takeScreenShot;
+
+//replay feature
+replayButton = document.getElementById("replay");
+let replayState = false;
+
+let keypressTimesArray = [];
+document.onkeydown = function (e) {
+  let time = new Date().getTime();
+  time = Math.floor(time / 10);
+  keypressTimesArray.push({ time: time, char: e.key });
+};
+document.querySelector(".progress").style.top =
+  document.getElementById("demo2").offsetTop + "px";
+function replay() {
+  let repTime = keypressTimesArray[0].time - 100;
+  replayState = true;
+  // clearInterval(replayInterval);
+  textBox = replayData
+  textBox.pop()
+  document.getElementById("demo2").innerHTML = textBox.join('')
+  i = 0;
+  document.getElementById("canvas").style.display = "none";
+  document.getElementById("demo2").classList.remove("hidden");
+  document.getElementById("mnmn").classList.remove("hidden");
+  document.querySelector(".progress-bar").style.display = "block";
+  document.querySelector(".progress").style.top =
+    document.getElementById("demo2").offsetTop + "px";
+  document.querySelector(".progress-bar").style.backgroundColor = keymapRC;
+  if(navigator.userAgent.includes('Android')|| navigator.userAgent.includes('iPhone')){
+    document.getElementById('mnmn').style.scale='0.5'
+  }
+  setTimeout(() => {
+    document.querySelector(".message").scrollIntoView({ behavior: "smooth" });
+  }, 100);
+  let replayInterval = setInterval(() => {
+    if (replayState) {
+      document.querySelector("#reset").disabled = true;
+      repTime++;
+      document.querySelector(".progress-bar").style.width =
+        (i / textBox.length) * 100 + "%";
+      keypressTimesArray.forEach((el) => {
+        if (el.time == repTime) {
+          if (el.char == " ") {
+            XYZ(document.getElementById("space"));
+          }
+          spans.forEach((element) => {
+            if (element.innerHTML == el.char) {
+              element.click();
+            }
+          });
+        }
+      });
+    }
+
+    if (repTime == keypressTimesArray[keypressTimesArray.length - 1].time) {
+      setTimeout(() => {
+        document.getElementById("demo2").classList.add("hidden");
+        document.getElementById("mnmn").classList.add("hidden");
+        document.querySelector("#reset").disabled = "false";
+      }, 1000);
+      document.querySelector(".caret").style.opacity = "0";
+    }
+    if (
+      repTime ==
+      keypressTimesArray[keypressTimesArray.length - 1].time + 10
+    ) {
+      replayButton.style.display = "none";
+    }
+    if (
+      repTime ==
+      keypressTimesArray[keypressTimesArray.length - 1].time + 20
+    ) {
+      setTimeout(() => {
+        document.getElementById("canvas").style.display = "flex";
+        drawChart();
+        document.querySelector("#reset").disabled = false;
+        replayState = false;
+        document.querySelector(".progress-bar").style.display = "none";
+        clearInterval(replayInterval);
+      }, 1000);
+    }
+  }, 10);
+}
+
+replayButton.onclick = replay;

@@ -38,7 +38,8 @@ var keymap = function () {
   spacebar.innerHTML = " ";
   spacebar.id = "space";
   spacebar.style.color = "transparent";
-  spacebar.style.cursor = "pointer";
+  spacebar.style.pointerEvents= 'none'
+
 
   row4.appendChild(spacebar);
 
@@ -96,6 +97,7 @@ var keymap = function () {
     el.style.cursor = "pointer";
     el.style.opacity = 0;
     el.style.animation = "fadeIn 0.1s linear forwards";
+    el.style.pointerEvents= 'none'
     el.style.animationDelay = counter / 30 + "s";
     counter++;
   });
