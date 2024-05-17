@@ -1282,7 +1282,7 @@ function keymapNextChar(delay) {
 }
 
 function inactivityTimer(delay = 5000) {
-  if (i > 0) {
+  if (i > 0 && !replayState) {
     clearTimeout(timerId);
 
     timerId = setTimeout(() => {
@@ -1306,7 +1306,9 @@ document.addEventListener("keyup", () => {
     setTimeout(() => {
       document.getElementById("caret").style.opacity = "0.8";
     }, 500);
-
+    setTimeout(()=>{
+      caretPosition()
+    },350)
     document.getElementById("demo2").parentElement.removeChild(afk);
     clearTimeout(timerId);
   } else {
