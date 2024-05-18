@@ -96,6 +96,14 @@ body::-webkit-scrollbar {
   font-weight: 400;
   word-spacing: -3px;
 }
+#results .button:last-child {
+  pointer-events: all !important;
+  border: dashed rgba(139, 155, 243, 0.769) !important;
+  background-color: transparent;
+  color: white;
+  outline: none;
+}
+#results .button:last-child:hover {border-color:rgb(21, 226, 134) !important ;}
 
 .button {
   border: none;

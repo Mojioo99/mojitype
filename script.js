@@ -88,7 +88,6 @@ blinkingCaret = document.getElementById("blinking");
 borderedCaret = document.getElementById("bordered");
 keymapSwitch = document.getElementById("keymapSwitch");
 
-console.log(spans[0]);
 function gen() {
   textBox = document.getElementById("demo2").innerHTML;
   const box = document.getElementById("demo2");
@@ -114,7 +113,8 @@ function gen() {
     }
     average = (average + numb) / qzaaa.length;
     console.log(average);
-    console.log(qzaaa);
+
+    replayData = Array.from(textBox);
     check = Array.from(textBox);
     textBox = Array.from(textBox);
 
@@ -209,8 +209,8 @@ if (lsNumOfwords) {
   document.getElementById("hhhhh").focus();
   numOfWord(10);
   document.querySelector(".nav").style.display = "flex";
-}else if (navigator.userAgent.includes("Windows")) {
- numOfWord(25)
+} else if (navigator.userAgent.includes("Windows")) {
+  numOfWord(25);
 }
 
 function numOfWord(n) {
@@ -323,7 +323,7 @@ function calculateResults() {
       return 0;
     }
   }
-  console.log(timeTaken, timeTaken - chart.length, chart);
+
   document.getElementById(
     "demo4"
   ).innerHTML = `${timeTaken}s afk:(${afkTime().toFixed(
@@ -410,6 +410,11 @@ function rightAndWrongKey(e) {
 
   document.getElementById("demo2").innerHTML = textBox.join("");
 }
+document.onkeydown = function (e) {
+  if (replayState) {
+    e.preventDefault();
+  }
+};
 document.body.addEventListener("keyup", function (e) {
   touches++;
   touchesRaw++;
@@ -574,6 +579,8 @@ function reset() {
   } else {
     document.querySelector(".minSpeed").style.display = "none";
   }
+  keypressTimesArray = [];
+  replayButton.style.display = "initial";
 }
 document.querySelector(".min").style.display = "none";
 document.querySelector(".minSpeed").style.display = "none";
@@ -591,21 +598,29 @@ window.addEventListener("keydown", function (e) {
 });
 
 function rightKeyPress(key, color) {
-  for (j = 0; j < spans.length; j++) {
-    if (key == spans[j].innerHTML) {
-      spans[j].style.backgroundColor = color;
-      let currnet = j;
-      setTimeout(() => {
-        spans[currnet].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
-      }, 150);
+  if (
+    !switchCheck(keymapNext) &&
+    !switchCheck(keymapStatic) &&
+    switchCheck(keymapReact)
+  ) {
+    for (j = 0; j < spans.length; j++) {
+      if (key == spans[j].innerHTML) {
+        spans[j].style.backgroundColor = color;
+        let currnet = j;
+        setTimeout(() => {
+          spans[currnet].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
+        }, 150);
+      }
     }
   }
 }
 keymapSwitch.style.cursor = "pointer";
 keymapSwitch.style.display = "none";
+keymapConfig.style.display = "none";
 if (navigator.userAgent.includes("Windows")) {
   keymapSwitch.style.display = "flex";
-  
+  keymapConfig.style.display = "flex";
+
   document.onmousemove = function () {
     if (i > 1) {
       document.getElementById("options").style.opacity = "1";
@@ -688,6 +703,36 @@ funBoxClose = document.getElementById("funBoxClose");
 funBoxClose.onclick = function () {
   document.getElementById("funBoxContainer").style.display = "none";
 };
+keymapConfig = document.getElementById("keymapConfig");
+keymapConfig.onclick = function () {
+  document.getElementById("keymapConfigContainer").style.display = "flex";
+};
+keymapStatic = document.getElementById("static");
+keymapReact = document.getElementById("react");
+keymapNext = document.getElementById("next");
+[keymapNext, keymapStatic, keymapReact].map((el) => {
+  el.onclick = function () {
+    toggleActive(el);
+    if (el == keymapNext) {
+      keymapReact.classList.remove("active");
+      keymapStatic.classList.remove("active");
+    } else if (el == keymapReact) {
+      keymapNext.classList.remove("active");
+      keymapStatic.classList.remove("active");
+    } else if (el == keymapStatic) {
+      keymapNext.classList.remove("active");
+      keymapReact.classList.remove("active");
+    } else {
+      toggleActive(keymapStatic);
+    }
+    saveToLS();
+    reset();
+  };
+});
+keymapConfigClose = document.getElementById("keymapConfigClose");
+keymapConfigClose.onclick = function () {
+  document.getElementById("keymapConfigContainer").style.display = "none";
+};
 
 timer.onclick = function () {
   document.getElementById("timerContainer").style.display = "flex";
@@ -757,6 +802,7 @@ borderedCaret.onclick = function () {
   }
   saveToLS();
 };
+
 function setAnimation(el) {
   setTimeout(() => {
     let arr = Array.from(el.classList);
@@ -810,6 +856,9 @@ function invalidResult(text) {
   modalText.innerText = text;
 
   body.appendChild(modalText);
+  setTimeout(() => {
+    body.removeChild(modalText);
+  }, 10000);
 }
 
 function caretPosition() {
@@ -954,7 +1003,7 @@ minSpeed.onclick = function (e) {
   reset();
 };
 setInterval(() => {
-  if (i < textBox.length - 1 && i > 1 && !isTimerActive) {
+  if (i < textBox.length - 1 && i > 1 && !isTimerActive && !replayState) {
     // document.querySelector('.realTime').style.display = 'block'
     // document.querySelector('.liveAccuracy').style.display = 'block'
     if (errors == 0) {
@@ -1008,6 +1057,7 @@ setInterval(() => {
   }
 }, 5000);
 var drawChart = function () {
+  document.getElementById("canvas").innerHTML = "";
   setTimeout(() => {
     document.getElementById("canvas").innerHTML =
       '<canvas id="myChart" style="width:100%;height: 250px;"></canvas>';
@@ -1168,6 +1218,8 @@ function XYZ(el) {
       i / 120
     }s'>${char}</span>`;
     rightKeyPress(char, keymapRC);
+    document.querySelector(".progress-bar").style.backgroundColor = keymapRC;
+
     i++;
   } else if (
     char != textBox[i] &&
@@ -1179,8 +1231,9 @@ function XYZ(el) {
     textBox[i] = `<span id='sec' style='opacity:1 !important;animation-delay:${
       i / 120
     }s'>${textBox[i]}</span>`;
-    document.getElementById("demo3").innerHTML = `mistakes: ${mistakes++} `;
+
     rightKeyPress(char, keymapWC);
+  document.querySelector(".progress-bar").style.backgroundColor = keymapWC;
 
     i++;
   } else if (char == "Backspace" && i > 0) {
@@ -1193,37 +1246,43 @@ function XYZ(el) {
   keymapNextChar(100);
 }
 function keymapNextChar(delay) {
-  setTimeout(() => {
-    qz = document.getElementById("demo2").innerText.split("");
-    qzz = document.getElementById("demo2").innerText.split(" ");
-    spans2 = document.querySelectorAll("#keyy");
-    // const synth = window.speechSynthesis;
-    // let text = qzz[i]
-    // console.log(text);
-    // let utterThis = new SpeechSynthesisUtterance(text);
-    // utterThis.rate=2
-    // synth.speak(utterThis)
+  if (
+    switchCheck(keymapNext) &&
+    !switchCheck(keymapStatic) &&
+    !switchCheck(keymapReact)
+  ) {
+    setTimeout(() => {
+      qz = document.getElementById("demo2").innerText.split("");
+      qzz = document.getElementById("demo2").innerText.split(" ");
+      spans2 = document.querySelectorAll("#keyy");
+      // const synth = window.speechSynthesis;
+      // let text = qzz[i]
+      // console.log(text);
+      // let utterThis = new SpeechSynthesisUtterance(text);
+      // utterThis.rate=2
+      // synth.speak(utterThis)
 
-    for (let t = 0; t < spans2.length; t++) {
-      if (spans2[t].innerHTML == qz[i]) {
-        spans2[t].style.backgroundColor = keymapRC;
-        spans2[t].style.color = "black";
-      } else {
-        spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
-        spans2[t].style.color = keymapRC;
+      for (let t = 0; t < spans2.length; t++) {
+        if (spans2[t].innerHTML == qz[i]) {
+          spans2[t].style.backgroundColor = keymapRC;
+          spans2[t].style.color = "black";
+        } else {
+          spans2[t].style.backgroundColor = "rgba(69, 68, 68, 0.345)";
+          spans2[t].style.color = keymapRC;
+        }
+        if (qz[i] == "-") {
+          document.getElementById("space").style.backgroundColor = keymapRC;
+        } else {
+          document.getElementById("space").style.backgroundColor =
+            "rgba(69, 68, 68, 0.345)";
+        }
       }
-      if (qz[i] == "-") {
-        document.getElementById("space").style.backgroundColor = keymapRC;
-      } else {
-        document.getElementById("space").style.backgroundColor =
-          "rgba(69, 68, 68, 0.345)";
-      }
-    }
-  }, delay);
+    }, delay);
+  }
 }
 
 function inactivityTimer(delay = 5000) {
-  if (i > 0) {
+  if (i > 0 && !replayState) {
     clearTimeout(timerId);
 
     timerId = setTimeout(() => {
@@ -1247,7 +1306,9 @@ document.addEventListener("keyup", () => {
     setTimeout(() => {
       document.getElementById("caret").style.opacity = "0.8";
     }, 500);
-
+    setTimeout(()=>{
+      caretPosition()
+    },350)
     document.getElementById("demo2").parentElement.removeChild(afk);
     clearTimeout(timerId);
   } else {
@@ -1320,6 +1381,9 @@ function saveToLS() {
     crt,
     minAcc,
     minSpeed,
+    keymapNext,
+    keymapReact,
+    keymapStatic,
   ];
 
   buttons.map((el) => {
@@ -1343,8 +1407,10 @@ let buttons = [
   crt,
   minAcc,
   minSpeed,
+  keymapNext,
+  keymapReact,
+  keymapStatic,
 ];
-console.log(buttons);
 
 const Ls = JSON.parse(localStorage.getItem("stats"));
 if (Ls) {
@@ -1364,3 +1430,101 @@ if (Ls) {
     reset();
   }, 100);
 }
+//screenShot
+function takeScreenShot() {
+  html2canvas(document.body, {
+    allowTaint: true,
+  }).then((canvas) => {
+    const link = document.createElement("a");
+    link.download = "screenshot.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+screenShotBtn = document.getElementById("screenShot");
+screenShotBtn.onclick = takeScreenShot;
+
+//replay feature
+replayButton = document.getElementById("replay");
+let replayState = false;
+
+let keypressTimesArray = [];
+document.onkeydown = function (e) {
+  let time = new Date().getTime();
+  time = Math.floor(time / 10);
+  keypressTimesArray.push({ time: time, char: e.key });
+};
+document.querySelector(".progress").style.top =
+  document.getElementById("demo2").offsetTop + "px";
+function replay() {
+  let repTime = keypressTimesArray[0].time - 100;
+  replayState = true;
+  // clearInterval(replayInterval);
+  textBox = replayData
+  textBox.pop()
+  document.getElementById("demo2").innerHTML = textBox.join('')
+  i = 0;
+  document.getElementById("canvas").style.display = "none";
+  document.getElementById("demo2").classList.remove("hidden");
+  document.getElementById("mnmn").classList.remove("hidden");
+  document.querySelector(".progress-bar").style.display = "block";
+  document.querySelector(".progress").style.top =
+    document.getElementById("demo2").offsetTop + "px";
+  document.querySelector(".progress-bar").style.backgroundColor = keymapRC;
+  if(navigator.userAgent.includes('Android')|| navigator.userAgent.includes('iPhone')){
+    document.getElementById('mnmn').style.scale='0.5'
+  }
+  setTimeout(() => {
+    document.querySelector(".message").scrollIntoView({ behavior: "smooth" });
+  }, 100);
+  let replayInterval = setInterval(() => {
+    if (replayState) {
+      document.querySelector("#reset").disabled = true;
+      repTime++;
+      document.querySelector(".progress-bar").style.width =
+        (i / textBox.length) * 100 + "%";
+      keypressTimesArray.forEach((el) => {
+        if (el.time == repTime) {
+          if (el.char == " ") {
+            XYZ(document.getElementById("space"));
+          }
+          spans.forEach((element) => {
+            if (element.innerHTML == el.char) {
+              element.click();
+            }
+          });
+        }
+      });
+    }
+
+    if (repTime == keypressTimesArray[keypressTimesArray.length - 1].time) {
+      setTimeout(() => {
+        document.getElementById("demo2").classList.add("hidden");
+        document.getElementById("mnmn").classList.add("hidden");
+        document.querySelector("#reset").disabled = "false";
+      }, 1000);
+      document.querySelector(".caret").style.opacity = "0";
+    }
+    if (
+      repTime ==
+      keypressTimesArray[keypressTimesArray.length - 1].time + 10
+    ) {
+      replayButton.style.display = "none";
+    }
+    if (
+      repTime ==
+      keypressTimesArray[keypressTimesArray.length - 1].time + 20
+    ) {
+      setTimeout(() => {
+        document.getElementById("canvas").style.display = "flex";
+        drawChart();
+        document.querySelector("#reset").disabled = false;
+        replayState = false;
+        document.querySelector(".progress-bar").style.display = "none";
+        clearInterval(replayInterval);
+      }, 1000);
+    }
+  }, 10);
+}
+
+replayButton.onclick = replay;
